@@ -6,6 +6,8 @@
 #include "sdkconfig.h"
 #include "mpu6050.h"
 
+int interrupt_threshold = 30;  // From 0 to 255
+
 char buffer[100];
 char* s;
 float x, y, z, accel;
@@ -32,27 +34,21 @@ bool check_mpu6050()
 void init_mpu6050()
 {
 	slave_write_byte(SMPLRT_DIV, 0x07);
-	slave_write_byte(PWR_MGMT_1, 0x01);
 	slave_write_byte(CONFIG, 0);
 	slave_write_byte(GYRO_CONFIG, 24);
 } 
 
 void init_int_mpu6050() {
 
-
-  slave_write_byte(0x6B, 0x00);
-  slave_write_byte(SIGNAL_PATH_RESET, 0x07); //Reset all internal signal paths in the MPU-6050 by writing 0x07 to register 0x68;
-  slave_write_byte(I2C_SLV0_ADDR, 0x20); //write register 0x37 to select how to use the interrupt pin. For an active high, push-pull signal that stays until register (decimal) 58 is read, write 0x20.
-  slave_write_byte(ACCEL_CONFIG, 0x01); //Write register 28 (==0x1C) to set the Digital High Pass Filter, bits 3:0. For example set it to 0x01 for 5Hz. (These 3 bits are grey in the data sheet, but they are used! Leaving them 0 means the filter always outputs 0.)
-  slave_write_byte(MOT_THR, 10); //Write the desired Motion threshold to register 0x1F (For example, write decimal 20).  
-  slave_write_byte(MOT_DUR, 40); //Set motion detect duration to 1  ms; LSB is 1 ms @ 1 kHz rate  
-  slave_write_byte(MOT_DETECT_CTRL, 0x15); //to register 0x69, write the motion detection decrement and a few other settings (for example write 0x15 to set both free-fall and motion decrements to 1 and accelerometer start-up delay to 5ms total by adding 1ms. )   
-  slave_write_byte(INT_ENABLE, 0x40); //write register 0x38, bit 6 (0x40), to enable motion detection interrupt.     
-  slave_write_byte(0x37, 160); // now INT pin is active low
-
-//	slave_write_byte(PATH_RESET, 0x07);
+  	slave_write_byte(PWR_MGMT_1, 0x00);
+  	slave_write_byte(SIGNAL_PATH_RESET, 0x07); //Reset all internal signal paths in the MPU-6050 by writing 0x07 to register 0x68;
+  	slave_write_byte(I2C_SLV0_ADDR, 0x20); //write register 0x37 to select how to use the interrupt pin. For an active high, push-pull signal that stays until register (decimal) 58 is read, write 0x20.
+  	slave_write_byte(ACCEL_CONFIG, 0x01); //Write register 28 (==0x1C) to set the Digital High Pass Filter, bits 3:0. For example set it to 0x01 for 5Hz. (These 3 bits are grey in the data sheet, but they are used! Leaving them 0 means the filter always outputs 0.)
+  	slave_write_byte(MOT_THR, interrupt_threshold); //Write the desired Motion threshold to register 0x1F (For example, write decimal 20).  
+  	slave_write_byte(MOT_DUR, 40); //Set motion detect duration to 1  ms; LSB is 1 ms @ 1 kHz rate  
+  	slave_write_byte(MOT_DETECT_CTRL, 0x15); //to register 0x69, write the motion detection decrement and a few other settings (for example write 0x15 to set both free-fall and motion decrements to 1 and accelerometer start-up delay to 5ms total by adding 1ms. )   
+  	slave_write_byte(INT_ENABLE, 0x40); //write register 0x38, bit 6 (0x40), to enable motion detection interrupt.     
 	vTaskDelay(15/portTICK_PERIOD_MS);
-
 
 }
 
