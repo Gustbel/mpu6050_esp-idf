@@ -16,8 +16,12 @@ void app_main(void) {
 
     // Init I2C
     init_i2c();
-    
+
     // Init sensor
+	init_mpu6050();
+
+    // Init Interruption
+    init_int_mpu6050();
 
     // Check sensor
     if (check_mpu6050()){
@@ -26,6 +30,7 @@ void app_main(void) {
     else{
         printf("\nNO Initialized\n");
     }
+
 
     // Read data
     while(1){
@@ -42,6 +47,9 @@ void app_main(void) {
         vTaskDelay(15/portTICK_PERIOD_MS);
         printf("\tZ: %f\n\n\n", get_mpu6050_old(5));
         vTaskDelay(15/portTICK_PERIOD_MS);
+        
+        
+        reset_int();	// Very important reset Interruption
 
         vTaskDelay(2000/portTICK_PERIOD_MS);
     }

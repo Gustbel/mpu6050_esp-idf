@@ -16,7 +16,6 @@
 #define SMPLRT_DIV   0x19
 #define CONFIG       0x1A
 #define GYRO_CONFIG  0x1B
-#define INT_ENABLE   0x38
 #define ACCEL_XOUT_H 0x3B
 #define ACCEL_YOUT_H 0x3D
 #define ACCEL_ZOUT_H 0x3F
@@ -25,12 +24,34 @@
 #define GYRO_ZOUT_H  0x47
 #define MPU_ID       0x75
 
+// Interruption regs
+#define INT_PIN_CFG  0x37	// Interruption configuration
+//#define ACCEL_CONFIG 0x1C	// Digital High Pass Filter - bits 3:0	
+#define WOM_THR      0x1F	// Interruption Thresshold
+//#define INT_ENABLE   0x38	// Interruption Enable
+#define PATH_RESET   0x68	// Reset
+#define MOTION   	 0x69	// Reset	
+#define INT_DUR      0x20	// Int duration
+#define ACCEL_CTRL   0x15	// Interruption Ctrl
+
+	 #define SIGNAL_PATH_RESET  0x68
+     #define I2C_SLV0_ADDR      0x37
+     #define ACCEL_CONFIG       0x1C 
+     #define MOT_THR            0x1F  // Motion detection threshold bits [7:0]
+     #define MOT_DUR            0x20  // Duration counter threshold for motion interrupt generation, 1 kHz rate, LSB = 1 ms
+     #define MOT_DETECT_CTRL    0x69
+     #define INT_ENABLE         0x38
+     #define WHO_AM_I_MPU6050 0x75 // Should return 0x68
+     #define INT_STATUS 0x3A
+
 int8_t slave_read_byte(uint8_t);
 bool slave_write_byte(uint8_t, uint8_t); 
 bool check_mpu6050(void);
-void init_mpu6050(bool);
+void init_mpu6050();
 void print_mpu6050(void);
 float get_mpu6050_old(int);
 char* get_mpu6050(void);
+void init_int_mpu6050();
+void reset_int();
 
 #endif
