@@ -40,8 +40,8 @@ bool slave_write_byte(uint8_t, uint8_t);
 bool check_mpu6050(void);
 void init_mpu6050();
 void print_mpu6050(void);
-float get_mpu6050_old(int);
-char* get_mpu6050(void);
+float get_mpu6050_axis(int);
+float get_mpu6050(void);
 void init_int_mpu6050();
 void reset_int();
 

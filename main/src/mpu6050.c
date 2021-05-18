@@ -8,8 +8,6 @@
 
 int interrupt_threshold = 30;  // From 0 to 255
 
-char buffer[100];
-char* s;
 float x, y, z, accel;
 
 short value;
@@ -61,23 +59,19 @@ void print_mpu6050()
 	printf("MPU6050 : Not detected (Accelerometer, Gyroscope sensor)");
 }
 
-char* get_mpu6050()
+float get_mpu6050()
 {
     x = ((slave_read_byte(ACCEL_XOUT_H) << 8) | slave_read_byte(ACCEL_XOUT_H + 1) ) / 1638.4;
     y = ((slave_read_byte(ACCEL_YOUT_H) << 8) | slave_read_byte(ACCEL_YOUT_H + 1) ) / 1638.4;
     z = ((slave_read_byte(ACCEL_ZOUT_H) << 8) | slave_read_byte(ACCEL_ZOUT_H + 1) ) / 1638.4;
 
     accel = sqrt( pow(x,2) + pow(y,2) + pow(z,2) );
-    s = "";
-	sprintf(buffer, "%.2f",accel);
-    s=buffer;
 
-    return s;
+    return accel;
 }
 
-float get_mpu6050_old(int a)
+float get_mpu6050_axis(int a)
 {
-  	s = ""; 
     switch (a) 
     {	
     	case 0:	/* Aceler X */

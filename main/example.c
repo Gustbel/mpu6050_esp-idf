@@ -34,18 +34,18 @@ void app_main(void) {
 
     // Read data
     while(1){
-        printf("Accelerometer:\tX: %f", get_mpu6050_old(0));
+        printf("Accelerometer:\tX: %f", get_mpu6050_axis(0));
         vTaskDelay(15/portTICK_PERIOD_MS);
-        printf("\tY: %f", get_mpu6050_old(1)); 
+        printf("\tY: %f", get_mpu6050_axis(1)); 
         vTaskDelay(15/portTICK_PERIOD_MS);
-        printf("\tZ: %f\n", get_mpu6050_old(2));
+        printf("\tZ: %f\n", get_mpu6050_axis(2));
         vTaskDelay(15/portTICK_PERIOD_MS);
         
-        printf("Gyroscope:\tX: %f", get_mpu6050_old(3));
+        printf("Gyroscope:\tX: %f", get_mpu6050_axis(3));
         vTaskDelay(15/portTICK_PERIOD_MS);
-        printf("\tY: %f", get_mpu6050_old(4)); 
+        printf("\tY: %f", get_mpu6050_axis(4)); 
         vTaskDelay(15/portTICK_PERIOD_MS);
-        printf("\tZ: %f\n\n\n", get_mpu6050_old(5));
+        printf("\tZ: %f\n\n\n", get_mpu6050_axis(5));
         vTaskDelay(15/portTICK_PERIOD_MS);
         
         
