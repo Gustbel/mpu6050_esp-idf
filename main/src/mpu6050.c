@@ -34,7 +34,7 @@ void init_mpu6050()
 	slave_write_byte(SMPLRT_DIV, 0x07);
 	slave_write_byte(CONFIG, 0);
 	slave_write_byte(GYRO_CONFIG, 24);
-} 
+}
 
 void init_int_mpu6050() {
 
@@ -91,9 +91,10 @@ float get_mpu6050_axis(int a)
 }
 
 
-void reset_int() {
+void reset_int_mpu6050() {
 
-	printf("INTERRUPTION: Register 0x3A: %d (0x%x)\n", slave_read_byte(0x3A), slave_read_byte(0x3A));
+    // For Interrupt reset, register 0x3A must be read
+	slave_read_byte(0x3A);
 	vTaskDelay(15/portTICK_PERIOD_MS);
 
 }

@@ -43,6 +43,6 @@ void print_mpu6050(void);
 float get_mpu6050_axis(int);
 float get_mpu6050(void);
 void init_int_mpu6050();
-void reset_int();
+void reset_int_mpu6050();
 
 #endif
